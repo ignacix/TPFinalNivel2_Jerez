@@ -29,8 +29,6 @@ namespace presentacion
             
         }
 
-
-
         public static bool ValidarPrecio(string cadena)
         {
             if (decimal.TryParse(cadena, out decimal valorDecimal))

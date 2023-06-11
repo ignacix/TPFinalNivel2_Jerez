@@ -24,25 +24,21 @@ namespace presentacion
         private void Form1_Load(object sender, EventArgs e)
         {
             ArticuloNegocio articuloNegocio = new ArticuloNegocio();
-
             dgvPrincipal.DataSource = articuloNegocio.Listar();
             Articulo selecionado = dgvPrincipal.CurrentRow.DataBoundItem as Articulo;
             OcultarColumnas();
             Helper.CargarImagen(pictureBox1, selecionado.UrlImagen);
             CargarDatos(selecionado);
             ActualizarGrilla();
-
-            //CultureInfo culturaActual = CultureInfo.CurrentCulture;
-            //string separadorDecimal = culturaActual.NumberFormat.NumberDecimalSeparator;
-            //MessageBox.Show(culturaActual.ToString());
-            //MessageBox.Show(separadorDecimal);
-
             cbxCampo.Items.Add("Categoria");
-            cbxCampo.Items.Add("Marca");
-            
-
-
-
+            cbxCampo.Items.Add("Marca");            
+        }
+        private void btnLimpiarFiltro_Click(object sender, EventArgs e)
+        {
+            cbxCampo.SelectedIndex = -1;
+            cbxCriterio.SelectedIndex = -1;
+            txbBuscar.Text = "";
+            ActualizarGrilla();
         }
 
         private void btnAgregar_Click(object sender, EventArgs e)
@@ -72,14 +68,29 @@ namespace presentacion
             }
 
         }
-
-
-        private void CargarDatos(Articulo art)
+        private void btnBorrar_Click(object sender, EventArgs e)
         {
-            txbMostrarNombre.Text = $"{art.Nombre}";
-            txbMostrarDescripcion.Text = $"Descripción: {art.Descripcion}\r\nMarca: {art.Marca}\r\nPrecio: {art.Precio}";
+            try
+            {
+                ArticuloNegocio negocio = new ArticuloNegocio();
+                Articulo articuloActual = (Articulo)dgvPrincipal.CurrentRow.DataBoundItem;
+                DialogResult decision = MessageBox.Show($"Esta seguro que desea borrar el articulo {articuloActual.Nombre}?", "Eliminar", MessageBoxButtons.YesNo);
+                if (decision == DialogResult.Yes)
+                {
+                    negocio.Eliminar(articuloActual.Id);
+                    MessageBox.Show("Articulo Eliminado");
+                    ActualizarGrilla();
+                }
+            }
+            catch (NullReferenceException)
+            {
+                MessageBox.Show("Por favor SELECCIONE UN ARTICULO");
+            }
+            catch (Exception ex)
+            {
 
-
+                MessageBox.Show(ex.Message);
+            }            
         }
 
         private void dgvPrincipal_SelectionChanged(object sender, EventArgs e)
@@ -89,9 +100,15 @@ namespace presentacion
                 Articulo selecionado = dgvPrincipal.CurrentRow.DataBoundItem as Articulo;            
                 Helper.CargarImagen(pictureBox1,selecionado.UrlImagen);
                 CargarDatos(selecionado);
-
             }
         }
+
+        private void CargarDatos(Articulo art)
+        {
+            txbMostrarNombre.Text = $"{art.Nombre}";
+            txbMostrarDescripcion.Text = $"Descripción: {art.Descripcion}\r\nMarca: {art.Marca}\r\nPrecio: {art.Precio}";
+        }
+
         
         private void OcultarColumnas()
         {
@@ -110,47 +127,13 @@ namespace presentacion
                 OcultarColumnas();
                 Articulo seleccionado = (Articulo)dgvPrincipal.CurrentRow.DataBoundItem;
                 CargarDatos(seleccionado);
-
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show(ex.Message);
             }
         }
 
-        private void btnBorrar_Click(object sender, EventArgs e)
-        {
-            try
-            {
-
-                ArticuloNegocio negocio = new ArticuloNegocio();
-                Articulo articuloActual = (Articulo)dgvPrincipal.CurrentRow.DataBoundItem;
-                DialogResult decision = MessageBox.Show($"Esta seguro que desea borrar el articulo {articuloActual.Nombre}?", "Eliminar", MessageBoxButtons.YesNo);
-                if (decision == DialogResult.Yes)
-                {
-                    negocio.Eliminar(articuloActual.Id);
-                    MessageBox.Show("Articulo Eliminado");
-                    ActualizarGrilla();
-                }
-
-
-            }
-            catch (NullReferenceException)
-            {
-                MessageBox.Show("Por favor SELECCIONE UN ARTICULO");
-            }
-            catch (Exception ex)
-            {
-
-                MessageBox.Show(ex.Message);
-            }
-
-
-            
-
-
-        }
 
         private void cbxCampo_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -210,17 +193,8 @@ namespace presentacion
             listaFiltrada = lista.FindAll(x => x.Nombre.ToUpper().Contains(filtro.ToUpper()) || x.Codigo.ToUpper().Contains(filtro.ToUpper()));
             dgvPrincipal.DataSource = null;
             dgvPrincipal.DataSource = listaFiltrada;            
-            OcultarColumnas();
-            
-
+            OcultarColumnas();           
         }
 
-        private void btnLimpiarFiltro_Click(object sender, EventArgs e)
-        {
-            cbxCampo.SelectedIndex = -1;
-            cbxCriterio.SelectedIndex = -1;
-            txbBuscar.Text = "";
-            ActualizarGrilla();
-        }
     }
 }

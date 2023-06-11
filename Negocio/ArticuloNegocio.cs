@@ -54,10 +54,7 @@ namespace Negocio
             finally
             {
                 AccesoDatos.cerrarConexion();
-            } 
-
-
-            
+            }            
         }
         public void Agregar(Articulo articulo)
         {
@@ -73,8 +70,7 @@ namespace Negocio
             finally
             {
                 AccesoDatos.cerrarConexion();
-            }
-            
+            }            
         }
 
         public void Modificar(Articulo articulo)
@@ -92,7 +88,6 @@ namespace Negocio
             {
                 AccesoDatos.cerrarConexion();
             }
-
         }
 
         public void Eliminar(int Id)
@@ -110,9 +105,6 @@ namespace Negocio
             {
                 AccesoDatos.cerrarConexion();
             }
-        }
-
-
-        
+        }      
     }
 }

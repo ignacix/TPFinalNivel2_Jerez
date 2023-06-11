@@ -8,6 +8,11 @@ namespace Dominio
 {
     public class Articulo
     {
+        public Articulo()
+        {
+            this.Marca = new Marca();
+            this.Categoria = new Categoria();
+        }
         public int Id { get; set; }
         public string Codigo { get; set; }
         public string Nombre { get; set; }
@@ -16,12 +21,5 @@ namespace Dominio
         public Categoria Categoria { get; set; }
         public string UrlImagen { get; set; }
         public decimal Precio { get; set; }
-
-        public Articulo()
-        {
-            this.Marca = new Marca();
-            this.Categoria = new Categoria();
-        }
-
     }
 }

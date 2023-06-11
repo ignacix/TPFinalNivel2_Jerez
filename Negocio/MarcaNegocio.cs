@@ -12,7 +12,6 @@ namespace Negocio
     {
         public List<Marca> listar()
         {
-
             List<Marca> lista = new List<Marca>();
             AccesoDatos accesoDatos = new AccesoDatos();
             SqlDataReader reader;
@@ -44,7 +43,5 @@ namespace Negocio
             }
         
         }
-
-
     }
 }

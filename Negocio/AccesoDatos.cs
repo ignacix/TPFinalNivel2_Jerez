@@ -68,9 +68,6 @@ namespace Negocio
             {
                 throw ex;
             }
-        }
-
-
-        
+        }        
     }
 }
